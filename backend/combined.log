@@ -1,0 +1,5 @@
+{"level":"info","message":"Server is running on port 3001","service":"screenshot-service"}
+{"level":"info","message":"Received screenshot request for URL: https://baidu.com, Device: desktop, WaitTime: undefined","service":"screenshot-service"}
+{"level":"info","message":"Successfully captured screenshot for URL: https://baidu.com","service":"screenshot-service"}
+{"level":"info","message":"Received screenshot request for URL: https://baidu.com, Device: mobile, WaitTime: undefined","service":"screenshot-service"}
+{"level":"info","message":"Successfully captured screenshot for URL: https://baidu.com","service":"screenshot-service"}

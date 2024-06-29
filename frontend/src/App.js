@@ -1,19 +1,7 @@
 import React, { useState, useCallback } from 'react';
 import { Camera, Download, Globe, Smartphone, Monitor } from 'lucide-react';
 import {
-  Button,
-  TextField,
-  Alert,
-  Typography,
-  Container,
-  Box,
-  CircularProgress,
-  ToggleButton,
-  ToggleButtonGroup,
-  Tooltip,
-  InputAdornment,
-  Snackbar,
-  Dialog
+  Button, TextField, Alert, Typography, Container, Box, CircularProgress, ToggleButton, ToggleButtonGroup, Tooltip, InputAdornment, Snackbar, Dialog
 } from '@mui/material';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 
@@ -106,7 +94,7 @@ const ScreenshotApp = () => {
     setImageUrl('');
 
     try {
-      const response = await fetch('http://backend:3001/api/capture', { // 修改这里
+      const response = await fetch('/api/capture', { // 修改这里为实际后端URL
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ url, device: selectedDevice }),
