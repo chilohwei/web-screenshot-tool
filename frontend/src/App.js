@@ -106,7 +106,7 @@ const ScreenshotApp = () => {
     setImageUrl('');
 
     try {
-      const response = await fetch('/api/capture', {
+      const response = await fetch('http://backend:3001/api/capture', { // 修改这里
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ url, device: selectedDevice }),
