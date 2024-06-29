@@ -1,20 +1,20 @@
-# 使用官方Node.js镜像作为基础镜像
-FROM node:14
+# Use an official Node.js runtime as a parent image
+FROM node:16-alpine
 
-# 创建并设置工作目录
-WORKDIR /usr/src/app
+# Set the working directory
+WORKDIR /app
 
-# 复制package.json和package-lock.json
+# Copy the package.json and package-lock.json files
 COPY package*.json ./
 
-# 安装依赖
-RUN npm install
+# Install dependencies
+RUN npm install express puppeteer winston express-validator
 
-# 复制当前目录的所有文件到工作目录
+# Copy the rest of the application code
 COPY . .
 
-# 暴露应用运行的端口，假设server.js监听3000端口
-EXPOSE 3000
+# Expose the port the app runs on
+EXPOSE 3001
 
-# 启动应用
-CMD ["node", "server.js"]
+# Define the command to run the app
+CMD [ "node", "server.js" ]

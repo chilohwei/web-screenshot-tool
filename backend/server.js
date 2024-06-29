@@ -33,6 +33,7 @@ app.get('/', (req, res) => {
 // 输入验证中间件
 const validateUrl = [
   body('url').isURL().withMessage('请提供有效的URL'),
+  body('waitTime').optional().isInt({ min: 0 }).withMessage('请提供有效的等待时间（毫秒）'),
 ];
 
 app.post('/api/capture', validateUrl, async (req, res) => {
@@ -41,9 +42,9 @@ app.post('/api/capture', validateUrl, async (req, res) => {
     return res.status(400).json({ errors: errors.array() });
   }
 
-  const { url, device } = req.body;
+  const { url, device, waitTime } = req.body;
 
-  logger.info(`Received screenshot request for URL: ${url}, Device: ${device}`);
+  logger.info(`Received screenshot request for URL: ${url}, Device: ${device}, WaitTime: ${waitTime}`);
 
   let browser;
   try {
@@ -59,13 +60,18 @@ app.post('/api/capture', validateUrl, async (req, res) => {
       await page.setViewport({ width: 1920, height: 1080 });
     }
 
-    await page.goto(url, { waitUntil: 'networkidle0', timeout: 60000 });
+    await page.goto(url, { waitUntil: 'networkidle0', timeout: 120000 });
 
     // 自动滚动并确保所有内容加载完毕
     await autoScroll(page);
 
-    // 确保页面底部（footer）加载完毕
-    await page.waitForSelector('footer', { timeout: 60000 });
+    // 等待自定义时间
+    if (waitTime) {
+      await page.waitForTimeout(waitTime);
+    }
+
+    // 滚动回页面顶部
+    await page.evaluate(() => window.scrollTo(0, 0));
 
     const screenshot = await page.screenshot({ fullPage: true });
 
@@ -86,7 +92,7 @@ app.post('/api/capture', validateUrl, async (req, res) => {
 // 自动滚动函数
 async function autoScroll(page) {
   await page.evaluate(async () => {
-    await new Promise((resolve, reject) => {
+    await new Promise((resolve) => {
       let totalHeight = 0;
       const distance = 100;
       const timer = setInterval(() => {

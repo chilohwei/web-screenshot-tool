@@ -1,17 +1,20 @@
-# 使用官方Node.js镜像作为构建环境
-FROM node:14 AS build
+# Use an official Node.js runtime as a parent image
+FROM node:16-alpine
 
-# 设置工作目录
+# Set the working directory
 WORKDIR /app
 
-# 复制package.json和package-lock.json
+# Copy the package.json and package-lock.json files
 COPY package*.json ./
 
-# 安装依赖
+# Install dependencies
 RUN npm install
 
-# 复制所有文件
+# Copy the rest of the application code
 COPY . .
 
-# 启动前端应用
+# Expose the port the app runs on
+EXPOSE 5000
+
+# Define the command to run the app in development mode
 CMD ["npm", "start"]

@@ -1,0 +1,4 @@
+{"error":{"name":"TimeoutError"},"level":"error","message":"Error capturing screenshot for URL: https://google.com","service":"screenshot-service"}
+{"error":{"name":"TimeoutError"},"level":"error","message":"Error capturing screenshot for URL: https://baidu.com","service":"screenshot-service"}
+{"error":{"name":"TimeoutError"},"level":"error","message":"Error capturing screenshot for URL: https://baidu.com","service":"screenshot-service"}
+{"error":{"name":"TimeoutError"},"level":"error","message":"Error capturing screenshot for URL: https://baidu.com","service":"screenshot-service"}

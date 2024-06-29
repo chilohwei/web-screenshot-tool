@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import { Camera, Download, Globe, Smartphone, Monitor } from 'lucide-react';
 import {
   Button,
@@ -11,7 +11,9 @@ import {
   ToggleButton,
   ToggleButtonGroup,
   Tooltip,
-  InputAdornment
+  InputAdornment,
+  Snackbar,
+  Dialog
 } from '@mui/material';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 
@@ -83,10 +85,19 @@ const ScreenshotApp = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
   const [device, setDevice] = useState('desktop');
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [dialogOpen, setDialogOpen] = useState(false);
+  const [cache, setCache] = useState({});
 
-  const captureScreenshot = async (selectedDevice = device) => {
+  const captureScreenshot = useCallback(async (selectedDevice = device) => {
     if (!url.match(/^https?:\/\/[^\s/$.?#].[^\s]*$/)) {
       setError('请输入有效的URL');
+      return;
+    }
+
+    const cacheKey = `${url}-${selectedDevice}`;
+    if (cache[cacheKey]) {
+      setImageUrl(cache[cacheKey]);
       return;
     }
 
@@ -109,13 +120,15 @@ const ScreenshotApp = () => {
       const blob = await response.blob();
       const newImageUrl = URL.createObjectURL(blob);
       setImageUrl(newImageUrl);
+      setCache(prevCache => ({ ...prevCache, [cacheKey]: newImageUrl }));
+      setSnackbarOpen(true); // 只在首次获取截图时显示成功提示
     } catch (err) {
       console.error('Error details:', err);
       setError(`获取截图时出错：${err.message || '请检查URL是否正确，并确保网络连接正常。'}`);
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [url, device, cache]);
 
   const downloadScreenshot = () => {
     const a = document.createElement('a');
@@ -124,6 +137,12 @@ const ScreenshotApp = () => {
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
+  };
+
+  const handleKeyPress = (e) => {
+    if (e.key === 'Enter') {
+      captureScreenshot();
+    }
   };
 
   return (
@@ -140,6 +159,7 @@ const ScreenshotApp = () => {
               placeholder="https://example.com"
               value={url}
               onChange={(e) => setUrl(e.target.value)}
+              onKeyPress={handleKeyPress}
               variant="outlined"
               InputProps={{
                 startAdornment: <Globe size={20} color="#3D63DD" style={{ marginRight: 8 }} />,
@@ -193,7 +213,9 @@ const ScreenshotApp = () => {
                 <img
                   src={imageUrl}
                   alt="Captured screenshot"
-                  style={{ width: '100%', objectFit: 'contain' }}
+                  title="点击可查看大图"
+                  style={{ width: '100%', maxHeight: '100%', objectFit: 'contain', cursor: 'pointer' }}
+                  onClick={() => setDialogOpen(true)}
                 />
               ) : (
                 <Typography variant="body1" color="textSecondary">
@@ -289,6 +311,24 @@ const ScreenshotApp = () => {
               </Box>
             </Box>
           </Box>
+          <Snackbar
+            open={snackbarOpen}
+            autoHideDuration={6000}
+            onClose={() => setSnackbarOpen(false)}
+            message="截图成功"
+          />
+          <Dialog
+            open={dialogOpen}
+            onClose={() => setDialogOpen(false)}
+            maxWidth="md"
+            fullWidth
+          >
+            <img
+              src={imageUrl}
+              alt="Enlarged screenshot"
+              style={{ width: '100%', height: 'auto' }}
+            />
+          </Dialog>
         </Container>
       </Box>
     </ThemeProvider>
