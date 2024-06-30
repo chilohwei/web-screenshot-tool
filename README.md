@@ -12,7 +12,6 @@
 - **截图预览**：实时显示输入网址的截图预览。
 - **切换设备**：支持桌面版和移动版的截图。
 - **下载截图**：一键下载生成的截图。
-- **自动化部署**：利用 Docker 实现自动化部署。
 
 ## 技术栈
 
@@ -57,25 +56,7 @@
    npm start
    ```
 
-6. 在浏览器中打开 [http://localhost:5000](http://localhost:5000)。
-
-### Docker-compose 部署
-
-```yml
-version: '3'
-services:
-    backend:
-        images: chiloh/web-screenshot-tool-backend:latest
-        ports:
-            - "3001:3001"
-        depends_on:
-            - frontend
-    
-    frontend:
-        images: chiloh/web-screenshot-tool-frontend:latestimg
-        ports:
-            - "5000:5000"
-```
+6. 在浏览器中打开 [http://localhost:3000](http://localhost:3000)。
 
 ## 贡献
 
