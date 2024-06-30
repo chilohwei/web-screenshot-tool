@@ -2,6 +2,8 @@
 
 ![截图工具](https://img.shields.io/badge/Web-Screenshot%20Tool-blue)
 
+[点击查看演示视频](https://files.chiloh.net/%E5%BC%80%E6%BA%90%EF%BD%9C%E6%99%BA%E8%83%BD%E7%BD%91%E9%A1%B5%E6%88%AA%E5%9B%BE%E5%B7%A5%E5%85%B7(GPT%E7%BC%96%E5%86%99).mp4)
+
 ## 简介
 
 网页在线截图工具是一个简单易用的在线工具，用户可以输入任意网址并获取该网页的截图。由 Chiloh 主导，ChatGPT 辅助编写实现，代码 100% 由 AI 创作。该工具支持桌面版和移动版截图，并提供一键下载功能。
