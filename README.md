@@ -19,10 +19,8 @@
 
 ## 技术栈
 
-- **前端**：React, Material-UI
+- **前端**：React
 - **后端**：Node.js, Express
-- **容器化**：Docker, Nginx Proxy Manager
-- **域名管理和 CDN**：Cloudflare
 
 ## 使用方法
 
